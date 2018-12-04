@@ -16,12 +16,17 @@ func check(e error) {
 func main() {
 	dat, err := ioutil.ReadFile("input.txt")
 	check(err)
-	boxIds := strings.Split(string(dat), "\n")
+	boxIDs := strings.Split(string(dat), "\n")
+	a(boxIDs)
+	b(boxIDs)
+}
+
+func a(boxIDs []string) {
 	var twos int
 	var threes int
 	var checksum int
 
-	for _, boxID := range boxIds {
+	for _, boxID := range boxIDs {
 		two := doesContainXOfTheSameLetters(boxID, 2)
 		three := doesContainXOfTheSameLetters(boxID, 3)
 
@@ -34,6 +39,16 @@ func main() {
 	}
 	checksum = twos * threes
 	fmt.Println(checksum)
+}
+
+func b(boxIDs []string) {
+	for index1, boxID1 := range boxIDs {
+		for index2, boxID2 := range boxIDs {
+			if index2 > index1 {
+				isOneLetterDiff(boxID1, boxID2)
+			}
+		}
+	}
 }
 
 func doesContainXOfTheSameLetters(id string, nOfLetters int) bool {
@@ -61,4 +76,25 @@ func frequentSym(id string) map[string]int {
 	}
 
 	return symbols
+}
+
+func isOneLetterDiff(boxID1 string, boxID2 string) bool {
+	lenval := len(boxID1)
+	var commonLetters strings.Builder
+	for index1, sym := range boxID1 {
+		for index2, sym2 := range boxID2 {
+			if index1 == index2 {
+				char1 := strconv.QuoteRune(sym)
+				char2 := strconv.QuoteRune(sym2)
+				if char1 == char2 {
+					lenval--
+					commonLetters.WriteString(char1)
+				}
+			}
+		}
+	}
+	if lenval == 1 {
+		fmt.Println(commonLetters.String())
+	}
+	return false
 }
