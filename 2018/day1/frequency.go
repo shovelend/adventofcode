@@ -3,32 +3,32 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		panic(e)
+	}
 }
 
 func main() {
 	dat, err := ioutil.ReadFile("input.txt")
 	check(err)
-	frequencies := strings.Split(string(dat),"\n")
+	frequencies := strings.Split(string(dat), "\n")
 
 	var total int
 	var totalList []int
 	var found bool
 	for found == false {
-		for _, frequency := range frequencies{
-			
+		for _, frequency := range frequencies {
+
 			current, err := strconv.Atoi(frequency)
 			check(err)
 			total += current
-			
-			if(Contains(totalList, total)){
+
+			if contains(totalList, total) {
 				fmt.Print(total)
 				return
 			} else {
@@ -38,7 +38,7 @@ func main() {
 	}
 }
 
-func Contains(a []int, x int) bool {
+func contains(a []int, x int) bool {
 	for _, n := range a {
 		if x == n {
 			return true
