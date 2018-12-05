@@ -30,9 +30,12 @@ func main() {
 	for _, claim := range claimsString {
 		claimList = append(claimList, constructClaim(claim))
 	}
-
-	overlappedInches := getNumberOfOverLappedInches(getFilledFabric(claimList))
+	filledFabric := getFilledFabric(claimList)
+	overlappedInches := getNumberOfOverLappedInches(filledFabric)
 	fmt.Println(overlappedInches)
+
+	nonCoveredID := getNonCoveredID(claimList, filledFabric)
+	fmt.Println(nonCoveredID)
 }
 
 func constructClaim(claimString string) Claim {
@@ -62,6 +65,25 @@ func getFilledFabric(claimList []Claim) [1000][1000]string {
 		}
 	}
 	return fabric
+}
+
+func getNonCoveredID(claimList []Claim, fabric [1000][1000]string) string {
+	var claimID string
+	for _, claim := range claimList {
+		area := claim.length * claim.width
+		var idCount, x, y int
+		for y = 0; y < 1000; y++ {
+			for x = 0; x < 1000; x++ {
+				if fabric[x][y] == claim.id {
+					idCount++
+				}
+			}
+		}
+		if idCount == area {
+			claimID = claim.id
+		}
+	}
+	return claimID
 }
 
 func getNumberOfOverLappedInches(fabric [1000][1000]string) int {
